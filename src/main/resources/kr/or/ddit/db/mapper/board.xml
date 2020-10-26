@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  
+<mapper namespace="board">
+  
+  
+  <insert id="insertBoardKind" parameterType="BoardKindVO">
+  	INSERT INTO BOARD_KIND(BOARD_KIND_ID, 
+							BOARD_KIND_TITLE, 
+							BOARD_KIND_STATUS, 
+							BOARD_KIND_CREATOR, 
+							BOARD_KIND_DT) 
+				VALUES(BK_SEQ.NEXTVAL, #{BOARD_KIND_TITLE}, #{BOARD_KIND_STATUS}, #{BOARD_KIND_CREATOR}, SYSDATE)
+  </insert>
+  
+  <select id="selectAllBoardKind" resultType="BoardKindVO">
+  	SELECT * 
+  	FROM BOARD_KIND
+  	WHERE BOARD_KIND_STATUS = 'Y'
+  	ORDER BY BOARD_KIND_ID
+  </select>
+  
+  
+  <select id="selectAddedBoardKind" parameterType="String" resultType="BoardKindVO">
+  	SELECT * 
+  	FROM BOARD_KIND
+  	WHERE BOARD_KIND_CREATOR = #{USERID}
+  	AND BOARD_KIND_STATUS = 'Y'
+  	ORDER BY BOARD_KIND_ID
+  </select>
+  
+  
+  
+  <select id="selectBoardKindId" parameterType="String" resultType="int">
+  	SELECT BOARD_KIND_ID
+    FROM BOARD_KIND
+    WHERE BOARD_KIND_TITLE = #{BOARD_KIND_TITLE}
+  </select>
+  
+  
+  
+  <select id="selectBoardPageList" parameterType="PageVO" resultType="BoardVO">
+  	
+  	
+ 	SELECT BT.*
+  	FROM(
+		SELECT BT_B.BOARD_SEQ, 
+			   LPAD(' ', (LEVEL-1)*4, '-') || BT_B.BOARD_TITLE AS BOARD_TITLE, 
+			   BT_B.BOARD_CONTENT, 
+			   BT_B.BOARD_PSEQ, 
+			   BT_B.BOARD_GN, 
+			   BT_B.USERID, 
+			   BT_B.BOARD_DATE, 
+			   BT_B.BOARD_KIND_ID, 
+			   BT_B.BOARD_STATUS
+		FROM(
+		    SELECT ROWNUM AS rn, BT_A.*
+		    FROM (
+		            SELECT *
+		            FROM BOARD_TABLE
+		            WHERE BOARD_KIND_ID = #{boardKindId}
+		            ORDER BY BOARD_SEQ
+		          )BT_A
+		     )BT_B
+		WHERE rn BETWEEN (#{pageNum} - 1 ) * #{pageSize} + 1 AND #{pageNum} * #{pageSize}
+		START WITH BT_B.BOARD_PSEQ IS NULL
+		CONNECT BY BT_B.BOARD_PSEQ = PRIOR BT_B.BOARD_SEQ
+		ORDER SIBLINGS BY BT_B.BOARD_GN DESC, BT_B.BOARD_DATE ASC ) BT
+	
+  </select>
+  
+  
+  
+  <select id="selectBoardCnt" parameterType="int" resultType="int">
+  	
+  	SELECT COUNT(*) 
+  	FROM BOARD_TABLE
+  	WHERE 1 = 1 
+  	AND BOARD_KIND_ID = #{BOARD_KIND_ID}
+  	AND BOARD_STATUS = 'Y'
+  	
+  </select>
+  
+  
+  
+  
+</mapper>
