@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,7 +13,7 @@
 	
 	
 	
-	<title>Board Regist</title>
+	<title>Board Update</title>
 	
 	
 	 <%@ include file="/pages/linkInfo/link_tag_Info.jsp" %>
@@ -52,9 +51,6 @@
  		#boardTitle{
  			height: 30px;
  			width: 90%;
- 		}
- 		#addedFileDiv {
- 		
  		}
  		
 	</style>
@@ -130,13 +126,16 @@
 				<br>
 				<br>
 				
+				
+				
 				<form method="post" id="summernoteForm" action="${cp }/boardRegist" enctype="multipart/form-data">
 				
-					<input type="hidden" name="BOARD_KIND_ID" value="${boardKindId }" />
-					<span class="spantag">제목 : </span><input type="text" id="boardTitle" name="boardTitle"/>
+					<input type="hidden" name="BOARD_SEQ" value="${boardVO.BOARD_SEQ }" />
+					<input type="hidden" name="BOARD_KIND_ID" value="${boardVO.BOARD_KIND_ID }" />
+					<span class="spantag">제목 : </span><input type="text" id="boardTitle" name="boardTitle" value="${boardVO.BOARD_TITLE }"/>
 					<br>
 					<br>
-					<textarea id="summernote" name="editordata"></textarea>
+					<textarea id="summernote" name="editordata">${boardVO.BOARD_CONTENT }</textarea>
 					<br>
 					
 					<div id="attachFileDiv">
@@ -152,7 +151,7 @@
 					</div>
 					<br>
 					<div id="btnDiv">
-						<button type="button" class="btn btn-primary" id="boardRegBtn">작성</button>
+						<button type="button" class="btn btn-primary" id="boardUpdateBtn">수정완료</button>
 						<button type="button" class="btn btn-primary" id="boardRegResetBtn">초기화</button>
 					</div>
 				</form>

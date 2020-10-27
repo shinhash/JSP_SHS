@@ -1,14 +1,25 @@
 package kr.or.ddit.file.vo;
 
-public class FileVO {
 
-	
+public class FileVO {
 	
 	private int FILE_SEQ;
 	private String FILE_NAME;
 	private String REAL_FILE_NAME;
 	private int BOARD_KIND_ID;
 	private int BOARD_SEQ;
+	
+
+	public FileVO() {
+		
+	}
+	public FileVO(String FILE_NAME, String REAL_FILE_NAME, int BOARD_KIND_ID, int BOARD_SEQ) {
+		this.FILE_NAME = FILE_NAME;
+		this.REAL_FILE_NAME = REAL_FILE_NAME;
+		this.BOARD_KIND_ID = BOARD_KIND_ID;
+		this.BOARD_SEQ = BOARD_SEQ;
+	}
+	
 	
 	
 	
@@ -44,8 +55,6 @@ public class FileVO {
 	public void setBOARD_SEQ(int bOARD_SEQ) {
 		BOARD_SEQ = bOARD_SEQ;
 	}
-	
-	
 	
 	
 	
@@ -99,6 +108,7 @@ public class FileVO {
 		return "FileVO [FILE_SEQ=" + FILE_SEQ + ", FILE_NAME=" + FILE_NAME + ", REAL_FILE_NAME=" + REAL_FILE_NAME
 				+ ", BOARD_KIND_ID=" + BOARD_KIND_ID + ", BOARD_SEQ=" + BOARD_SEQ + "]";
 	}
+	
 	
 	
 	

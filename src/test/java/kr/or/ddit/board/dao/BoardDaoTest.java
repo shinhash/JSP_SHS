@@ -64,7 +64,7 @@ public class BoardDaoTest {
 	public void insertBoardKindTest() {
 
 		/***Given***/
-		BoardKindVO bkVO = new BoardKindVO("test", 'Y', "brown");
+		BoardKindVO bkVO = new BoardKindVO("test", "Y", "brown");
 		BoardDaoI boardDao = new BoardDao();
 		
 		/***When***/

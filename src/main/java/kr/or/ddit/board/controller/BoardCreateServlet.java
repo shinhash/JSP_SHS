@@ -52,7 +52,7 @@ public class BoardCreateServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		MemberVO member = (MemberVO) request.getSession().getAttribute("MEMBER");
 		String addboardName = request.getParameter("addboardName");
-		char board_use = request.getParameter("board_use").charAt(0);
+		String board_use = request.getParameter("board_use");
 		
 //		logger.debug("board_use : {}", board_use);
 		BoardKindVO bkVO = new BoardKindVO(addboardName, board_use, member.getUserid());

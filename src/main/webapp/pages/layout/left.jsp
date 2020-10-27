@@ -15,7 +15,7 @@
 			<li class="active"><a href="${cp }/boardCreate">게시판 생성</a></li>
 			
 			<c:forEach items="${bkList }" var="bk">
-				<li class="active"><a href="${cp }/boardListPage?boardKindTitle=${bk.BOARD_KIND_TITLE }">${bk.BOARD_KIND_TITLE }</a></li>
+				<li class="active"><a href="${cp }/boardListPage?boardKindId=${bk.BOARD_KIND_ID }">${bk.BOARD_KIND_TITLE }</a></li>
 			</c:forEach>
 			
 		</ul>

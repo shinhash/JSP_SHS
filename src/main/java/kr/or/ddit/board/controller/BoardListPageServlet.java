@@ -24,27 +24,31 @@ public class BoardListPageServlet extends HttpServlet {
       
 	private static final Logger logger = LoggerFactory.getLogger(BoardListPageServlet.class);
 	private BoardServiceI boardService;
-	public BoardListPageServlet() {
+	@Override
+	public void init() throws ServletException {
 		boardService = new BoardService();
 	}
+	
 
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String boardKindTitle = request.getParameter("boardKindTitle");
-		logger.debug("boardTitle : {}", boardKindTitle);
+		int boardKindId = Integer.parseInt(request.getParameter("boardKindId"));
 		
 		int pageNum = 1;
 		try {
 			pageNum = Integer.parseInt(request.getParameter("pageNum"));
 		}catch(Exception e) { }
 		
-		Map<String, Object> boardInfoMap = boardService.selectBoardPageList(boardKindTitle, pageNum, 10);
+		Map<String, Object> boardInfoMap = boardService.selectBoardPageList(boardKindId, pageNum, 10);
 		
 		int pageCnt = (Integer) boardInfoMap.get("pageCnt");
 		List<BoardVO> boardPageList = (List<BoardVO>) boardInfoMap.get("boardList");
 		
+		String boardKindTitle = (String)boardInfoMap.get("boardKindTitle");
+		logger.debug("boardKindTitle : {}", boardKindTitle);
 		
 		
+		request.setAttribute("boardKindId", boardKindId);
 		request.setAttribute("pageNum", pageNum);
 		request.setAttribute("pageCnt", pageCnt);
 		request.setAttribute("boardPageList", boardPageList);

@@ -13,7 +13,7 @@ public class BoardVO {
 	private String USERID;
 	private Date BOARD_DATE;
 	private int BOARD_KIND_ID;
-	private char BOARD_STATUS;
+	private String BOARD_STATUS;
 	
 	
 	
@@ -67,12 +67,18 @@ public class BoardVO {
 	public void setBOARD_KIND_ID(int bOARD_KIND_ID) {
 		BOARD_KIND_ID = bOARD_KIND_ID;
 	}
-	public char getBOARD_STATUS() {
+	public String getBOARD_STATUS() {
 		return BOARD_STATUS;
 	}
-	public void setBOARD_STATUS(char bOARD_STATUS) {
+	public void setBOARD_STATUS(String bOARD_STATUS) {
 		BOARD_STATUS = bOARD_STATUS;
 	}
+	
+	
+	
+	
+	
+	
 	
 	
 	
@@ -86,7 +92,7 @@ public class BoardVO {
 		result = prime * result + BOARD_KIND_ID;
 		result = prime * result + BOARD_PSEQ;
 		result = prime * result + BOARD_SEQ;
-		result = prime * result + BOARD_STATUS;
+		result = prime * result + ((BOARD_STATUS == null) ? 0 : BOARD_STATUS.hashCode());
 		result = prime * result + ((BOARD_TITLE == null) ? 0 : BOARD_TITLE.hashCode());
 		result = prime * result + ((USERID == null) ? 0 : USERID.hashCode());
 		return result;
@@ -118,7 +124,10 @@ public class BoardVO {
 			return false;
 		if (BOARD_SEQ != other.BOARD_SEQ)
 			return false;
-		if (BOARD_STATUS != other.BOARD_STATUS)
+		if (BOARD_STATUS == null) {
+			if (other.BOARD_STATUS != null)
+				return false;
+		} else if (!BOARD_STATUS.equals(other.BOARD_STATUS))
 			return false;
 		if (BOARD_TITLE == null) {
 			if (other.BOARD_TITLE != null)

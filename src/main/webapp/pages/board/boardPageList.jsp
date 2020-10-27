@@ -41,8 +41,38 @@
 		}
 		.board_seq{
 			text-align: center;
+			width: 10%;
+		}
+		.board_userid{
+			text-align: center;
+			width: 15%;
+		}
+		.board_date{
+			text-align: center;
+			width: 20%;
+		}
+		#boardTBody tr:hover{
+			background: lime;
 		}
 	</style>
+	
+	
+	<script type="text/javascript">
+
+		$(document).ready(function(){
+			$("#boardTBody tr").on("click", function(){
+
+				var boardid = $(this).data("boardid")
+				document.location = "boardInfo?boardId=" + boardid;
+			})
+		})
+
+	</script>
+	
+	
+	
+	
+	
 	
 </head>
 
@@ -61,10 +91,8 @@
 				
 
 				<br>
-				<br>
-				<br>
 				
-				
+				<h2>${boardKindTitle }</h2>
 				<!-- 접속한 게시판 -->
 				<table id="boardTable">
 					<tr>
@@ -73,20 +101,28 @@
 						<th>작성자 아이디</th>
 						<th>작성일시</th>
 					</tr>
-					<c:forEach items="${boardPageList }" var="board">
-					<tr>
-						<td class="board_seq">${board.BOARD_SEQ }</td>
-						<td>${board.BOARD_TITLE }</td>
-						<td>${board.USERID }</td>
-						<td><fmt:formatDate value="${board.BOARD_DATE }" pattern="YYYY-MM-dd"/></td>
-					</tr>
-					</c:forEach>
+					<tbody id="boardTBody">
+					
+						<c:forEach items="${boardPageList }" var="board">
+						
+						
+						
+						<tr data-boardid="${board.BOARD_SEQ}" >
+							<td class="board_seq">${board.BOARD_SEQ }</td>
+							<td class="board_title">${board.BOARD_TITLE }</td>
+							<td class="board_userid">${board.USERID }</td>
+							<td class="board_date"><fmt:formatDate value="${board.BOARD_DATE }" pattern="YYYY-MM-dd"/></td>
+						</tr>
+						</c:forEach>
+					
+					</tbody>
+					
 				</table>
 				<br>
-				<a class="btn btn-default pull-right" href="${cp }/boardRegist?boardKind=${boardKindTitle}" >새글 등록</a>
+				<a class="btn btn-default pull-right" href="${cp }/boardRegist?boardKindId=${boardKindId}" >새글 등록</a>
 				
 				
-				
+				<!-- 페이지 번호 -->
 				<div class="text-center">
 					<ul class="pagination">
 					

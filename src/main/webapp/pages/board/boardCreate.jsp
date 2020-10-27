@@ -41,13 +41,23 @@
 
 			$(".upBKSt").on("click", function(){
 
+				
+				
 				var bkId = $(this).val()
 				var use = $(this).parents(".updateDiv").find(".useSelect").val()
+				var before = $(this).parents(".updateDiv").find(".boardKindStatus").val()
 				
-				$("#upBoardKindId").val(bkId)
-				$("#boardUse").val(use)
-				
-				$("#UpdateBKForm").submit();
+				if(use == before){
+					alert("변경하지 않았습니다.")
+				}else{
+
+					alert("변경하였습니다.")
+					
+					$("#upBoardKindId").val(bkId)
+					$("#boardUse").val(use)
+					
+					$("#UpdateBKForm").submit();
+				}
 			})
 			
 			
@@ -89,12 +99,29 @@
 				<form action="${cp }/boardKindUpdate" method="post" id="UpdateBKForm">
 					<c:forEach items="${memBkList }" var="memBk">
 						<div class="updateDiv">
+						
+							<c:set var="bkStatus" value="${memBk.BOARD_KIND_STATUS}"></c:set>
+							
 							게시판 이름 : <input type="text" name="updateBoardInfo" value="${memBk.BOARD_KIND_TITLE }" readonly="readonly"/> 
+							
 							<select class="useSelect" name="board_use">
-								<option value="Y">사용</option>
-								<option value="N">미사용</option>
+								<c:choose>
+								
+									<c:when test="${bkStatus eq 'Y'}">
+										<option value="Y" selected="selected">사용</option>
+										<option value="N">미사용</option>									
+									</c:when>
+									
+									<c:when test="${bkStatus eq 'N'}">
+										<option value="Y">사용</option>
+										<option value="N" selected="selected">미사용</option>	
+									</c:when>
+									
+								</c:choose>
+								
 							</select>
 							<button type="button" class="upBKSt" name="upBKID" value="${memBk.BOARD_KIND_ID }">수정</button>
+							<input type="hidden" class="boardKindStatus" value="${bkStatus }" />
 							<br>
 						</div>
 						

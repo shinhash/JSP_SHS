@@ -9,6 +9,7 @@
 		<typeAlias type="kr.or.ddit.board.vo.BoardKindVO" alias="BoardKindVO"/>
 		<typeAlias type="kr.or.ddit.board.vo.BoardVO" alias="BoardVO"/>
 		<typeAlias type="kr.or.ddit.page.PageVO" alias="PageVO"/>
+		<typeAlias type="kr.or.ddit.file.vo.FileVO" alias="FileVO"/>
 	</typeAliases>
 
 
