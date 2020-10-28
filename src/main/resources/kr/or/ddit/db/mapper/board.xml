@@ -5,11 +5,6 @@
   
   
 <mapper namespace="board">
-
-
-	
-	
-	
   
   
   <insert id="insertBoardKind" parameterType="BoardKindVO">
@@ -67,14 +62,15 @@
 	       BOARD_B.USERID,
 	       BOARD_B.BOARD_DATE,
 	       BOARD_B.BOARD_KIND_ID,
-	       BOARD_B.BOARD_STATUS
+	       BOARD_B.BOARD_STATUS, 
+	       BOARD_B.rn as BOARD_RN
 	FROM(
 	        SELECT ROWNUM AS rn, BOARD_A.*
 	        FROM (
 	                    SELECT *
 	                    FROM (
 	                            select BOARD_SEQ, 
-	                                   LPAD(' ', (LEVEL-1)*4, '-') || BOARD_TITLE AS BOARD_TITLE, 
+	                                   LPAD('  ┗─', (LEVEL-1)*4) || BOARD_TITLE AS BOARD_TITLE, 
 	                                   BOARD_CONTENT, 
 	                                   BOARD_PSEQ, 
 	                                   BOARD_GN, 
@@ -130,6 +126,16 @@
   </select>
   
   
+  
+  <select id="selectBoardGnVO" parameterType="int" resultType="BoardVO">
+  
+  	SELECT * 
+  	FROM BOARD_TABLE 
+  	WHERE BOARD_SEQ = #{boardPseqNum}
+  
+  </select>
+  
+  
 
 	
 	<parameterMap type="BoardVO" id="ClobBoardVO">
@@ -158,15 +164,41 @@
   
   <insert id="insertNewBoard" parameterType="BoardVO">
   
-	  	
-  	INSERT INTO BOARD_TABLE(BOARD_SEQ, 
-							BOARD_TITLE, 
-							BOARD_CONTENT, 
-							BOARD_GN, 
-							USERID, 
-							BOARD_DATE, 
-							BOARD_KIND_ID, 
-							BOARD_STATUS)
+  
+  	<choose>
+  		<when test="BOARD_PSEQ != 0">
+  		
+  			INSERT INTO BOARD_TABLE(BOARD_SEQ, 
+								BOARD_TITLE, 
+								BOARD_CONTENT, 
+								BOARD_PSEQ, 
+								BOARD_GN, 
+								USERID, 
+								BOARD_DATE, 
+								BOARD_KIND_ID, 
+								BOARD_STATUS)
+  				VALUES(#{BOARD_SEQ}, 
+  					   #{BOARD_TITLE}, 
+  					   EMPTY_CLOB(), 
+  					   #{BOARD_PSEQ}, 
+  					   #{BOARD_GN}, 
+  					   #{USERID}, 
+  					   SYSDATE, 
+  					   #{BOARD_KIND_ID}, 
+  					   #{BOARD_STATUS})
+  					   
+  		</when>
+  		
+  		<otherwise>
+  			
+  			INSERT INTO BOARD_TABLE(BOARD_SEQ, 
+								BOARD_TITLE, 
+								BOARD_CONTENT, 
+								BOARD_GN, 
+								USERID, 
+								BOARD_DATE, 
+								BOARD_KIND_ID, 
+								BOARD_STATUS)
   				VALUES(#{BOARD_SEQ}, 
   					   #{BOARD_TITLE}, 
   					   EMPTY_CLOB(), 
@@ -175,7 +207,29 @@
   					   SYSDATE, 
   					   #{BOARD_KIND_ID}, 
   					   #{BOARD_STATUS})
-		  					   
+  			
+  		</otherwise>
+  	</choose>
+  	
+	  	
+<!--   	INSERT INTO BOARD_TABLE(BOARD_SEQ,  -->
+<!-- 							BOARD_TITLE,  -->
+<!-- 							BOARD_CONTENT,  -->
+<!-- 							BOARD_PSEQ,  -->
+<!-- 							BOARD_GN,  -->
+<!-- 							USERID,  -->
+<!-- 							BOARD_DATE,  -->
+<!-- 							BOARD_KIND_ID,  -->
+<!-- 							BOARD_STATUS) -->
+<!--   				VALUES(#{BOARD_SEQ},  -->
+<!--   					   #{BOARD_TITLE},  -->
+<!--   					   EMPTY_CLOB(),  -->
+<!--   					   #{BOARD_PSEQ},  -->
+<!--   					   GN_SEQ.NEXTVAL,  -->
+<!--   					   #{USERID},  -->
+<!--   					   SYSDATE,  -->
+<!--   					   #{BOARD_KIND_ID},  -->
+<!--   					   #{BOARD_STATUS}) -->
   					   
   </insert>
   
@@ -203,15 +257,64 @@
 						   FILE_NAME, 
 						   REAL_FILE_NAME, 
 						   BOARD_KIND_ID, 
-						   BOARD_SEQ)
+						   BOARD_SEQ, 
+						   FILE_STATUS)
   				VALUES(#{FILE_SEQ}, 
 					   #{FILE_NAME}, 
 					   #{REAL_FILE_NAME}, 
 					   #{BOARD_KIND_ID}, 
-					   ${BOARD_SEQ})
+					   #{BOARD_SEQ}, 
+					   #{FILE_STATUS})
   					   
   </insert>
   
+  
+  <select id="selectFileList" parameterType="int" resultType="FileVO">
+  
+  	SELECT *
+	FROM FILE_TABLE
+	WHERE BOARD_SEQ = #{boardSeq}
+	AND FILE_STATUS = 'Y'
+	
+  </select>
+  
+  
+  <update id="updateBoardInfo" parameterMap="ClobBoardVO">
+  
+  	UPDATE BOARD_TABLE
+  	SET
+  	BOARD_TITLE = #{BOARD_TITLE}, 
+	BOARD_CONTENT = #{BOARD_CONTENT,jdbcType=CLOB}, 
+  	BOARD_DATE = SYSDATE
+  	WHERE 1 = 1
+  	AND BOARD_SEQ = #{BOARD_SEQ}
+  	AND BOARD_KIND_ID = #{BOARD_KIND_ID}
+  	
+  </update>
+  
+  
+  
+  <update id="updateFileInfo">
+  
+  	UPDATE FILE_TABLE
+  	SET
+  	FILE_STATUS = #{FILE_STATUS}
+  	WHERE FILE_SEQ = #{FILE_SEQ}
+  
+  </update>
+  
+  
+  
+  <update id="delBoardStatus" parameterMap="ClobBoardVO">
+  
+  	UPDATE BOARD_TABLE
+  	SET
+  	BOARD_STATUS = #{BOARD_STATUS}, 
+  	BOARD_TITLE = #{BOARD_TITLE}, 
+  	BOARD_DATE = SYSDATE
+  	WHERE BOARD_SEQ = #{BOARD_SEQ}
+  	
+  </update>
   
   
   

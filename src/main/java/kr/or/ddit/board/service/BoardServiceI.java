@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import kr.or.ddit.board.vo.BoardKindVO;
 import kr.or.ddit.board.vo.BoardVO;
 import kr.or.ddit.file.vo.FileVO;
+import kr.or.ddit.reple.vo.RepleVO;
 
 public interface BoardServiceI {
 
@@ -23,10 +24,18 @@ public interface BoardServiceI {
 	
 	BoardVO selectBoardInfo(int boardSeq);
 	
+	BoardVO selectBoardGnVO(int boardPseqNum);
+	
+	List<FileVO> selectFileList(int boardSeq);
+	
 	int insertBoard(BoardVO boardVO);
 	
 	int insertBoardFile(FileVO fileVO);
 	
 	int selectBoardSeq();
+	
+	int updateBoardInfo(Map<String, Object> updateInfoMap);
+	
+	int delBoardStatus(BoardVO boardVO);
 	
 }

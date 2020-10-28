@@ -8,16 +8,18 @@ public class FileVO {
 	private String REAL_FILE_NAME;
 	private int BOARD_KIND_ID;
 	private int BOARD_SEQ;
+	private String FILE_STATUS;
 	
 
 	public FileVO() {
 		
 	}
-	public FileVO(String FILE_NAME, String REAL_FILE_NAME, int BOARD_KIND_ID, int BOARD_SEQ) {
+	public FileVO(String FILE_NAME, String REAL_FILE_NAME, int BOARD_KIND_ID, int BOARD_SEQ, String FILE_STATUS) {
 		this.FILE_NAME = FILE_NAME;
 		this.REAL_FILE_NAME = REAL_FILE_NAME;
 		this.BOARD_KIND_ID = BOARD_KIND_ID;
 		this.BOARD_SEQ = BOARD_SEQ;
+		this.FILE_STATUS = FILE_STATUS;
 	}
 	
 	
@@ -54,6 +56,12 @@ public class FileVO {
 	}
 	public void setBOARD_SEQ(int bOARD_SEQ) {
 		BOARD_SEQ = bOARD_SEQ;
+	}
+	public String getFILE_STATUS() {
+		return FILE_STATUS;
+	}
+	public void setFILE_STATUS(String fILE_STATUS) {
+		FILE_STATUS = fILE_STATUS;
 	}
 	
 	
@@ -108,6 +116,7 @@ public class FileVO {
 		return "FileVO [FILE_SEQ=" + FILE_SEQ + ", FILE_NAME=" + FILE_NAME + ", REAL_FILE_NAME=" + REAL_FILE_NAME
 				+ ", BOARD_KIND_ID=" + BOARD_KIND_ID + ", BOARD_SEQ=" + BOARD_SEQ + "]";
 	}
+	
 	
 	
 	

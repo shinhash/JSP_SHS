@@ -103,7 +103,7 @@
 
 			$("#attachAdd").on("click", function(){
 				tagId += 1;
-				tagInfo = "<div id='div"+tagId+"' class='attchFile'><input type='file' name='fileInput'><button type='button' id='"+tagId+"' class='delBtn'> X </button></input></div>";
+				tagInfo = "<div id='div"+tagId+"' class='attchFile'><input type='file' name='fileInput'><button type='button' id='"+tagId+"' class='delBtn btn btn-primary'> X </button></input></div>";
 				$("#addedFileDiv").append(tagInfo); // 태그 추가
 
 			});
@@ -132,6 +132,7 @@
 				
 				<form method="post" id="summernoteForm" action="${cp }/boardRegist" enctype="multipart/form-data">
 				
+					<input type="hidden" name="boardPseq" value="${boardPseq }" />
 					<input type="hidden" name="BOARD_KIND_ID" value="${boardKindId }" />
 					<span class="spantag">제목 : </span><input type="text" id="boardTitle" name="boardTitle"/>
 					<br>
@@ -144,9 +145,9 @@
 						<div id="addedFileDiv">
 						
 						</div>
-						
+						<br>
 						<div>
-							<input type="button" id="attachAdd" value="파일 추가"/>					
+							<button type="button" class="btn btn-primary" id="attachAdd">파일추가</button>				
 						</div>
 						
 					</div>

@@ -2,7 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,7 +13,7 @@
 	<meta name="author" content="">
 	<link rel="icon" href="${cp }/css/favicon.ico">
 	
-	<title>Board Info</title>
+	<title>Board Comment Regist</title>
 	
 	 <%@ include file="/pages/linkInfo/link_tag_Info.jsp" %>
 	
@@ -66,7 +65,7 @@
 			$("#commentBoardInfo").on("click", function(){
 				var boardPseq = $("#boardSeq").val();
 				var boardKindId = $("#boardKindId").val();
-				document.location = "boardRegist?boardPseq=" + boardPseq + "&boardKindId=" + boardKindId;
+				document.location = "boardCommentRegist?boardPseq=" + boardPseq + "&boardKindId=" + boardKindId;
 			})
 
 		})
@@ -189,9 +188,7 @@
 						[${reple.USERID } / <fmt:formatDate value="${reple.REPLE_DT }" pattern="YYYY-MM-dd"/>]
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						<c:if test="${reple.USERID == MEMBER.userid}">
-							<c:if test="${reple.REPLE_STATUS == 'Y' }">
-								<button type="button" class="btn btn-primary" id="delRepleBtn">삭제</button>											
-							</c:if>
+							<button type="button" class="btn btn-primary" id="delRepleBtn">삭제</button>					
 						</c:if>
 					</div>
 					</c:forEach>

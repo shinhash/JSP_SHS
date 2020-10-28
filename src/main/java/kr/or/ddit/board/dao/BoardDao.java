@@ -11,6 +11,7 @@ import kr.or.ddit.board.vo.BoardVO;
 import kr.or.ddit.db.MybatisUtil;
 import kr.or.ddit.file.vo.FileVO;
 import kr.or.ddit.page.PageVO;
+import kr.or.ddit.reple.vo.RepleVO;
 
 public class BoardDao implements BoardDaoI {
 
@@ -88,11 +89,26 @@ public class BoardDao implements BoardDaoI {
 		sqlSession.close();
 		return boardVO;
 	}
+	
+	
+	
+	
+
+
+	@Override
+	public List<BoardVO> selectBoardGnVO(int boardPseqNum) {
+		SqlSession sqlSession = MybatisUtil.getSqlSession();
+		List<BoardVO> boardList = sqlSession.selectList("board.selectBoardGnVO", boardPseqNum);
+		sqlSession.close();
+		return boardList;
+	}
+
+
+
 
 
 	@Override
 	public int insertBoard(BoardVO boardVO) {
-		
 		SqlSession sqlSession = MybatisUtil.getSqlSession();
 		int insertCnt = 0;
 		int insertUpdateCnt = 0;
@@ -101,26 +117,22 @@ public class BoardDao implements BoardDaoI {
 			insertCnt = sqlSession.insert("board.insertNewBoard", boardVO);
 		}catch(Exception e) { }
 		
-		
-		
 		if(insertCnt == 1) {
 			try {
 				insertUpdateCnt = sqlSession.update("board.updateNewInsertFile", boardVO);	
 			}catch(Exception e) { }
-			
-			if(insertUpdateCnt == 1) {
-				sqlSession.commit();
-			}
-			
-		}else if(insertCnt != 1 || insertUpdateCnt != 1) {
-			sqlSession.rollback();
 		}
 		
+		if(insertCnt == 1) {
+			sqlSession.commit();
+		}else {
+			sqlSession.rollback();
+		}
 		sqlSession.close();
 		
 		logger.debug("insertCnt : {}", insertCnt);
 		logger.debug("insertUpdateCnt : {}", insertUpdateCnt);
-		return insertCnt;
+		return insertUpdateCnt;
 	}
 
 
@@ -157,10 +169,60 @@ public class BoardDao implements BoardDaoI {
 	@Override
 	public int selectBoardSeq() {
 		SqlSession sqlSession = MybatisUtil.getSqlSession();
-		int boardSeq = sqlSession.selectOne("board.selectFileSeq");
+		int boardSeq = sqlSession.selectOne("board.selectBoardSeq");
 		sqlSession.close();
 		return boardSeq;
 	}
+
+
+	@Override
+	public List<FileVO> selectFileList(int boardSeq) {
+		SqlSession sqlSession = MybatisUtil.getSqlSession();
+		List<FileVO> fileList = sqlSession.selectList("board.selectFileList", boardSeq);
+		sqlSession.close();
+		return fileList;
+	}
+
+
+	@Override
+	public int updateBoardInfo(BoardVO updateBoardVO, SqlSession sqlSession) {
+		return sqlSession.update("board.updateBoardInfo", updateBoardVO);
+	}
+
+
+	@Override
+	public int updateFileInfo(FileVO updatefileVO, SqlSession sqlSession) {
+		return sqlSession.update("board.updateFileInfo", updatefileVO);
+	}
+
+
+	@Override
+	public int updateInsertFileInfo(FileVO insertFile, SqlSession sqlSession) {
+		return sqlSession.insert("board.insertBoardFile", insertFile);
+	}
+
+
+	@Override
+	public int delBoardStatus(BoardVO boardVO) {
+		
+		SqlSession sqlSession = MybatisUtil.getSqlSession();
+		int delBoardCnt = 0;
+		try {
+			delBoardCnt = sqlSession.update("board.delBoardStatus", boardVO);
+			
+		}catch(Exception e) { }
+		
+		if(delBoardCnt == 1) {
+			sqlSession.commit();
+		}else {
+			sqlSession.rollback();
+		}
+		
+		sqlSession.close();
+		return delBoardCnt;
+	}
+
+
 
 	
 }

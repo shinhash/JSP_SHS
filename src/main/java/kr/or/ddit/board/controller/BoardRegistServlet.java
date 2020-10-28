@@ -2,6 +2,8 @@ package kr.or.ddit.board.controller;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.ServletException;
@@ -38,14 +40,23 @@ public class BoardRegistServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int boardKindId = Integer.parseInt(request.getParameter("boardKindId"));
+		String boardPseq = request.getParameter("boardPseq");
 		
-		
-		request.setAttribute("boardKindId", boardKindId);
-		request.getRequestDispatcher("/pages/board/boardRegist.jsp").forward(request, response);
+		if(boardPseq == null) {
+			request.setAttribute("boardKindId", boardKindId);
+			request.getRequestDispatcher("/pages/board/boardRegist.jsp").forward(request, response);			
+		}else {
+			int boardPseqNum = Integer.parseInt(boardPseq);
+			
+			request.setAttribute("boardPseq", boardPseq);
+			request.setAttribute("boardKindId", boardKindId);
+			request.getRequestDispatcher("/pages/board/boardRegist.jsp").forward(request, response);	
+		}
 	}
 
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		String boardTitle = request.getParameter("boardTitle");
 		String editordata = request.getParameter("editordata");
 		int boardKindId = Integer.parseInt(request.getParameter("BOARD_KIND_ID"));
@@ -56,6 +67,7 @@ public class BoardRegistServlet extends HttpServlet {
 		int boardSeq = boardService.selectBoardSeq();
 		
 		
+		
 		BoardVO boardVO = new BoardVO();
 		boardVO.setBOARD_SEQ(boardSeq);
 		boardVO.setBOARD_TITLE(boardTitle);
@@ -64,60 +76,90 @@ public class BoardRegistServlet extends HttpServlet {
 		boardVO.setBOARD_KIND_ID(boardKindId);
 		boardVO.setBOARD_STATUS("Y");
 		
-		int insertCnt = boardService.insertBoard(boardVO);
+		String boardPseqText = request.getParameter("boardPseq"); 
+		logger.debug("boardPseqText : {}", boardPseqText);
 		
 		
-		int boardFileAddCnt = 0;
+		// 답글작성 ==> 부모글이 있는지 확인
+		int boardPseqNum = 0;
+		try{
+			boardPseqNum = Integer.parseInt(boardPseqText);
+			logger.debug("boardPseqNum : {}", boardPseqNum);
+		}catch(Exception e) { }
 		
+		// 부모글의 정보를 가져오기 및 셋팅
+		BoardVO boardGnVO = boardService.selectBoardGnVO(boardPseqNum);
+		boardVO.setBOARD_PSEQ(boardGnVO.getBOARD_SEQ());
+		boardVO.setBOARD_GN(boardGnVO.getBOARD_GN());
 		
 		FileVO fileVO = null;
 		Collection<Part> parts = request.getParts();
-		for(Part part : parts) {
+		
+		
+		// 게시글 작성(insert)
+		int insertBoardCnt = boardService.insertBoard(boardVO);
+		
+		int FileAddCnt = 0;
+		
+		int boardFileAllCnt = 0; // 첨부파일의 전체 수
+		int boardInsertFileCnt = 0; // 성공적으로 insert한 파일의 수
+		
+		if(insertBoardCnt == 1) {
 			
-			Part partTemp  = part;
-			String partName = partTemp.getName();
-			
-			String fileRealName = "";
-			
-			if(partName.equals("fileInput")) {
+			for(Part part : parts) {
 				
-				String attchHeader = partTemp.getHeader("Content-disposition");
-				logger.debug("attchHeader : {}", attchHeader);
+				Part partTemp  = part;
+				String partName = partTemp.getName();
 				
-				String[] headerInfo = attchHeader.split("; ");
+				String fileRealName = "";
 				
-				for(String headerSplit : headerInfo) {
+				if(partName.equals("fileInput")) {
 					
-					String[] temp = headerSplit.split("=");
+					String attchHeader = partTemp.getHeader("Content-disposition");
+					logger.debug("attchHeader : {}", attchHeader);
 					
-					if("filename".equals(temp[0])) {
-						fileRealName = temp[1].split("\"")[1];
+					String[] headerInfo = attchHeader.split("; ");
+					
+					for(String headerSplit : headerInfo) {
 						
+						String[] temp = headerSplit.split("=");
 						
-						// 파일 업로드
-						partTemp.write("D:\\upload\\" + fileRealName);
-						partTemp.delete();
-						
-						
-						// 파일경로를 db에 저장
-						String tempName = UUID.randomUUID().toString();
-						fileVO = new FileVO();
-						fileVO.setFILE_NAME(tempName);
-						fileVO.setREAL_FILE_NAME(fileRealName);
-						fileVO.setBOARD_KIND_ID(boardKindId);
-						fileVO.setBOARD_SEQ(boardSeq);
-						boardFileAddCnt = boardService.insertBoardFile(fileVO);
+						if("filename".equals(temp[0])) {
+							
+							fileRealName = temp[1].split("\"")[1];
+							if(!fileRealName.equals("")) {
+								
+								boardFileAllCnt++;
+								
+								// 파일 업로드
+								partTemp.write("D:\\upload\\" + fileRealName);
+								partTemp.delete();
+								
+								
+								// 파일경로를 db에 저장
+								String tempName = UUID.randomUUID().toString();
+								fileVO = new FileVO();
+								fileVO.setFILE_NAME(tempName);
+								fileVO.setREAL_FILE_NAME(fileRealName);
+								fileVO.setBOARD_KIND_ID(boardKindId);
+								fileVO.setBOARD_SEQ(boardSeq);
+								fileVO.setFILE_STATUS("Y");
+								FileAddCnt = boardService.insertBoardFile(fileVO);
+								
+								if(FileAddCnt == 1) {
+									boardInsertFileCnt++;
+								}
+							}
+						}
 					}
 				}
+				logger.debug("fileName : {}", fileRealName);
 			}
-			logger.debug("fileName : {}", fileRealName);
 		}
 		
 		
-		
-		if(insertCnt == 1 && boardFileAddCnt == 1) {
+		if(insertBoardCnt == 1 && boardFileAllCnt == boardInsertFileCnt) {
 			response.sendRedirect(request.getContextPath() + "/boardInfo?boardId=" + boardSeq);
-			
 		}
 		
 	}

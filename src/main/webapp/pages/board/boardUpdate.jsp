@@ -52,10 +52,13 @@
  			height: 30px;
  			width: 90%;
  		}
+ 		.attchFile{
+ 			width: 500px;
+ 		}
  		
 	</style>
 
-
+	
 	<script type="text/javascript">
 
 		$(function(){
@@ -84,8 +87,8 @@
 
 
 
-			$("#boardRegBtn").on("click", function(){
-				$("#summernoteForm").submit();
+			$("#boardUpdateBtn").on("click", function(){
+				$("#updatesummernoteForm").submit();
 			});
 
 
@@ -99,10 +102,22 @@
 
 			$("#attachAdd").on("click", function(){
 				tagId += 1;
-				tagInfo = "<div id='div"+tagId+"' class='attchFile'><input type='file' name='fileInput'><button type='button' id='"+tagId+"' class='delBtn'> X </button></input></div>";
+				tagInfo = "<div id='div"+tagId+"' class='attchFile'><input type='file' name='fileInput'><button type='button' id='"+tagId+"' class='delBtn'> X </button></input></div><br>";
 				$("#addedFileDiv").append(tagInfo); // 태그 추가
 
 			});
+
+
+			$(document).on("click", ".delFileBtn", function(){
+				
+				var delFileId = $(this).parents("#dbFileDiv").find(".delFileId").val();
+				alert(delFileId);
+				deltagInfo = "<div><input type='hidden' name='delFileIdInfo' value='"+delFileId+"' /></div>";
+				
+				$("#attachFileDiv #deletedFileIdIdiv").append(deltagInfo)
+				$(this).parents("#dbFileDiv").remove();
+			});
+			
 			
 		});
 	</script>
@@ -128,11 +143,11 @@
 				
 				
 				
-				<form method="post" id="summernoteForm" action="${cp }/boardRegist" enctype="multipart/form-data">
+				<form id="updatesummernoteForm" action="${cp }/boardUpdate" method="post" enctype="multipart/form-data">
 				
 					<input type="hidden" name="BOARD_SEQ" value="${boardVO.BOARD_SEQ }" />
 					<input type="hidden" name="BOARD_KIND_ID" value="${boardVO.BOARD_KIND_ID }" />
-					<span class="spantag">제목 : </span><input type="text" id="boardTitle" name="boardTitle" value="${boardVO.BOARD_TITLE }"/>
+					<span class="spantag">제목 : </span><input type="text" id="boardTitle" name="boardTitleName" value="${boardVO.BOARD_TITLE }"/>
 					<br>
 					<br>
 					<textarea id="summernote" name="editordata">${boardVO.BOARD_CONTENT }</textarea>
@@ -140,12 +155,28 @@
 					
 					<div id="attachFileDiv">
 					
-						<div id="addedFileDiv">
+						<div id="addedFileDiv"></div>
 						
+						
+						<div id="dbFileListDiv">
+							<c:forEach items="${fileList }" var="file">
+							
+								<div id="dbFileDiv">
+									<input type="hidden" class="delFileId" name="fileId" value="${file.FILE_SEQ }" />
+									<input type="text" name="addedFile" value="${file.REAL_FILE_NAME }" />
+									<button type="button" class="delFileBtn"> X </button>
+								</div>
+								
+							</c:forEach>
 						</div>
 						
+						
+						
+						<div id="deletedFileIdIdiv"></div>
+						
+						
 						<div>
-							<input type="button" id="attachAdd" value="파일 추가"/>					
+							<button type="button" class="btn btn-primary" id="attachAdd">파일추가</button>					
 						</div>
 						
 					</div>
@@ -154,6 +185,8 @@
 						<button type="button" class="btn btn-primary" id="boardUpdateBtn">수정완료</button>
 						<button type="button" class="btn btn-primary" id="boardRegResetBtn">초기화</button>
 					</div>
+					
+					
 				</form>
 				
 				

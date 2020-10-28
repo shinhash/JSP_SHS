@@ -14,6 +14,7 @@ public class BoardVO {
 	private Date BOARD_DATE;
 	private int BOARD_KIND_ID;
 	private String BOARD_STATUS;
+	private int BOARD_RN;
 	
 	
 	
@@ -73,7 +74,12 @@ public class BoardVO {
 	public void setBOARD_STATUS(String bOARD_STATUS) {
 		BOARD_STATUS = bOARD_STATUS;
 	}
-	
+	public int getBOARD_RN() {
+		return BOARD_RN;
+	}
+	public void setBOARD_RN(int bOARD_RN) {
+		BOARD_RN = bOARD_RN;
+	}
 	
 	
 	
@@ -148,9 +154,8 @@ public class BoardVO {
 	public String toString() {
 		return "BoardVO [BOARD_SEQ=" + BOARD_SEQ + ", BOARD_TITLE=" + BOARD_TITLE + ", BOARD_CONTENT=" + BOARD_CONTENT
 				+ ", BOARD_PSEQ=" + BOARD_PSEQ + ", BOARD_GN=" + BOARD_GN + ", USERID=" + USERID + ", BOARD_DATE="
-				+ BOARD_DATE + ", BOARD_KIND_ID=" + BOARD_KIND_ID + ", BOARD_STATUS=" + BOARD_STATUS + "]";
+				+ BOARD_DATE + ", BOARD_KIND_ID=" + BOARD_KIND_ID + ", BOARD_STATUS=" + BOARD_STATUS + ", BOARD_RN="
+				+ BOARD_RN + "]";
 	}
-	
-	
 	
 }

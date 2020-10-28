@@ -44,6 +44,20 @@ public class BoardListPageServlet extends HttpServlet {
 		int pageCnt = (Integer) boardInfoMap.get("pageCnt");
 		List<BoardVO> boardPageList = (List<BoardVO>) boardInfoMap.get("boardList");
 		
+		if(boardPageList.size() > 0) {
+			for(BoardVO nbspBoard : boardPageList) {
+				String title = nbspBoard.getBOARD_TITLE();
+				if(!"[삭제된 게시글 입니다.]".equals(title)) {
+					if(nbspBoard.getBOARD_PSEQ() != 0) {
+						String newTitle = title.replaceAll(" ", "&nbsp;");
+						nbspBoard.setBOARD_TITLE(newTitle);
+					}
+				}
+			}
+			
+		}
+		
+		
 		String boardKindTitle = (String)boardInfoMap.get("boardKindTitle");
 		logger.debug("boardKindTitle : {}", boardKindTitle);
 		

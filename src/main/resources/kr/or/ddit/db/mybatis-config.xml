@@ -2,6 +2,8 @@
 <!DOCTYPE configuration
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
+  
+  
 <configuration>
 	
 	<typeAliases>
@@ -10,6 +12,7 @@
 		<typeAlias type="kr.or.ddit.board.vo.BoardVO" alias="BoardVO"/>
 		<typeAlias type="kr.or.ddit.page.PageVO" alias="PageVO"/>
 		<typeAlias type="kr.or.ddit.file.vo.FileVO" alias="FileVO"/>
+		<typeAlias type="kr.or.ddit.reple.vo.RepleVO" alias="RepleVO"/>
 	</typeAliases>
 
 
@@ -27,5 +30,6 @@
   <mappers>
     <mapper resource="kr/or/ddit/db/mapper/member.xml"/>
     <mapper resource="kr/or/ddit/db/mapper/board.xml"/>
+    <mapper resource="kr/or/ddit/db/mapper/reple.xml"/>
   </mappers>
 </configuration>

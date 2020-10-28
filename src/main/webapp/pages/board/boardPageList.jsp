@@ -29,31 +29,7 @@
 	
 	
 	<style type="text/css">
-		#boardTable{
-			width: 100%;
-		}
-		#boardTable th, td{
-			border: 1px solid black;
-			
-		}
-		#boardTable th{
-			text-align: center;
-		}
-		.board_seq{
-			text-align: center;
-			width: 10%;
-		}
-		.board_userid{
-			text-align: center;
-			width: 15%;
-		}
-		.board_date{
-			text-align: center;
-			width: 20%;
-		}
-		#boardTBody tr:hover{
-			background: lime;
-		}
+		
 	</style>
 	
 	
@@ -62,10 +38,15 @@
 		$(document).ready(function(){
 			$("#boardTBody tr").on("click", function(){
 
-				var boardid = $(this).data("boardid")
-				document.location = "boardInfo?boardId=" + boardid;
-			})
-		})
+				var boardST = $(this).find(".boardST").val();
+				if(boardST == "Y"){
+					var boardid = $(this).data("boardid")
+					document.location = "boardInfo?boardId=" + boardid;
+				}else if(boardST == "N"){
+					alert("삭제된 게시글 입니다.")
+				}
+			});
+		});
 
 	</script>
 	
@@ -87,69 +68,72 @@
 	<div class="container-fluid">
 		<div class="row">
 			<%@ include file="/pages/layout/left.jsp" %>
+			
+			
+			
+			
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-				
-
 				<br>
-				
-				<h2>${boardKindTitle }</h2>
-				<!-- 접속한 게시판 -->
-				<table id="boardTable">
-					<tr>
-						<th>게시글 번호</th>
-						<th>제목</th>
-						<th>작성자 아이디</th>
-						<th>작성일시</th>
-					</tr>
-					<tbody id="boardTBody">
-					
-						<c:forEach items="${boardPageList }" var="board">
+				<div class="row">
+					<div class="col-sm-8 blog-main">
+						<h2 class="sub-header">${boardKindTitle }</h2>
 						
 						
+						<div class="table-responsive">
+							<table class="table table-striped">
+								<tr>
+									<th>게시글 번호</th>
+									<th>제목</th>
+									<th>작성자 아이디</th>
+									<th>작성일시</th>
+								</tr>
+								
+								<tbody id="boardTBody">
+									<c:forEach items="${boardPageList }" var="board">
+									<tr data-boardid="${board.BOARD_SEQ}">
+										<td class="board_seq">${board.BOARD_RN }</td>
+										<td class="board_title">${board.BOARD_TITLE }</td>
+										<td class="board_userid">${board.USERID }</td>
+										<td class="board_date"><fmt:formatDate value="${board.BOARD_DATE }" pattern="YYYY-MM-dd"/></td>
+										<input type="hidden" class="boardST" value="${board.BOARD_STATUS }" />
+									</tr>
+									</c:forEach>
+								
+								</tbody>
+				
+				
+							</table>
+						</div>
+				
+						<br>
+						<a class="btn btn-default pull-right" href="${cp }/boardRegist?boardKindId=${boardKindId}" >새글 등록</a>
+		
 						
-						<tr data-boardid="${board.BOARD_SEQ}" >
-							<td class="board_seq">${board.BOARD_SEQ }</td>
-							<td class="board_title">${board.BOARD_TITLE }</td>
-							<td class="board_userid">${board.USERID }</td>
-							<td class="board_date"><fmt:formatDate value="${board.BOARD_DATE }" pattern="YYYY-MM-dd"/></td>
-						</tr>
-						</c:forEach>
-					
-					</tbody>
-					
-				</table>
-				<br>
-				<a class="btn btn-default pull-right" href="${cp }/boardRegist?boardKindId=${boardKindId}" >새글 등록</a>
-				
-				
-				<!-- 페이지 번호 -->
-				<div class="text-center">
-					<ul class="pagination">
-					
-						<c:forEach var="i" begin="1" end="${pageCnt}" step="1">
-							<c:choose>
-								<c:when test="${pageNum == i}">
-									<li class="active"><span>${i}</span></li>
-								</c:when>
-								<c:otherwise>
-									<li><a href="${cp}/boardListPage?pageNum=${i}">${i}</a></li>						
-								</c:otherwise>
-							</c:choose>
-						</c:forEach>
-					</ul>
+						<!-- 페이지 번호 -->
+						<div class="text-center">
+							<ul class="pagination">
+							
+								<c:forEach var="i" begin="1" end="${pageCnt}" step="1">
+									<c:choose>
+										<c:when test="${pageNum == i}">
+											<li class="active"><span>${i}</span></li>
+										</c:when>
+										<c:otherwise>
+											<li><a href="${cp}/boardListPage?pageNum=${i}">${i}</a></li>						
+										</c:otherwise>
+									</c:choose>
+								</c:forEach>
+							</ul>
+						</div>
+					</div>
 				</div>
-				<!------------------------>
-				
-				
-				
-
-
-
 			</div>
+			
+			
+			
+			
 		</div>
 	</div>
-	
-	
 	
 </body>
 </html>
