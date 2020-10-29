@@ -54,7 +54,6 @@
  		}
  		.attchFile{
  			width: 500px;
- 			float: left;
  		}
  		
 	</style>
@@ -103,7 +102,7 @@
 
 			$("#attachAdd").on("click", function(){
 				tagId += 1;
-				tagInfo = "<div id='div"+tagId+"' class='attchFile'><input type='file' name='fileInput' style='float: left;'><button type='button' id='"+tagId+"' class='delBtn btn btn-primary'> X </button></div>";
+				tagInfo = "<div id='div"+tagId+"' class='attchFile'><input type='file' name='fileInput' style='float:left;'><button type='button' id='"+tagId+"' class='btn btn-primary delBtn'> X </button></input></div>";
 				$("#addedFileDiv").append(tagInfo); // 태그 추가
 
 			});
@@ -111,12 +110,12 @@
 
 			$(document).on("click", ".delFileBtn", function(){
 				
-				var delFileId = $(this).parents("#dbFileDiv").find(".delFileId").val();
-				alert(delFileId);
+				var delFileId = $(this).parents(".dbFileDiv").find(".delFileId").val();
+// 				alert(delFileId);
 				deltagInfo = "<div><input type='hidden' name='delFileIdInfo' value='"+delFileId+"' /></div>";
 				
 				$("#attachFileDiv #deletedFileIdIdiv").append(deltagInfo)
-				$(this).parents("#dbFileDiv").remove();
+				$(this).parents(".dbFileDiv").remove();
 			});
 			
 			
@@ -162,7 +161,7 @@
 						<div id="dbFileListDiv">
 							<c:forEach items="${fileList }" var="file">
 							
-								<div id="dbFileDiv">
+								<div class="dbFileDiv">
 									<input type="hidden" class="delFileId" name="fileId" value="${file.FILE_SEQ }" />
 									<input type="text" name="addedFile" value="${file.REAL_FILE_NAME }" />
 									<button type="button" class="delFileBtn"> X </button>
@@ -174,7 +173,9 @@
 						
 						
 						<div id="deletedFileIdIdiv"></div>
+						
 						<br>
+						
 						<div>
 							<button type="button" class="btn btn-primary" id="attachAdd">파일추가</button>					
 						</div>

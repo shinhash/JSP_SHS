@@ -178,6 +178,8 @@ public class BoardService implements BoardServiceI {
 			// 파일 추가
 			if(insertFileList != null) {
 				for(FileVO insertFile : insertFileList) {
+					int fileSeq = selectBoardSeq();
+					insertFile.setFILE_SEQ(fileSeq);
 					insertFileInfoCnt = boardDao.updateInsertFileInfo(insertFile, sqlSession);
 					if(insertFileInfoCnt == 1) {
 						insertCnt++;

@@ -98,6 +98,7 @@ public class BoardRegistServlet extends HttpServlet {
 		
 		// 게시글 작성(insert)
 		int insertBoardCnt = boardService.insertBoard(boardVO);
+//		int insertBoardCnt = 1;
 		
 		int FileAddCnt = 0;
 		
@@ -124,45 +125,56 @@ public class BoardRegistServlet extends HttpServlet {
 						
 						String[] temp = headerSplit.split("=");
 						
-						if("filename".equals(temp[0])) {
+						if(!temp[0].equals("form-data")) {
 							
-							fileRealName = temp[1].split("\"")[1];
-							if(!fileRealName.equals("")) {
+							
+							if("filename".equals(temp[0])) {
 								
-								boardFileAllCnt++;
+								if(!"\"\"".equals(temp[1])) {
+									
+									fileRealName = temp[1].split("\"")[1];
+									
+									
+									boardFileAllCnt++;
+									
+									// uuid
+									String tempName = UUID.randomUUID().toString();
+									
+									// file 확장자
+									String fileEx = FileUploadUtil.getExtension(fileRealName);
+									
+									// db에 저장할 파일의 경로와 파일의 이름 + 확장자
+									String filename = "D:\\upload\\" + tempName + "." + fileEx;
+									
+									// 파일 업로드
+									partTemp.write(filename);
+									partTemp.delete();
+									
+									
+									// 파일경로를 db에 저장
+									fileVO = new FileVO();
+									fileVO.setFILE_NAME(filename);
+									fileVO.setREAL_FILE_NAME(fileRealName);
+									fileVO.setBOARD_KIND_ID(boardKindId);
+									fileVO.setBOARD_SEQ(boardSeq);
+									fileVO.setFILE_STATUS("Y");
+									
+									FileAddCnt = boardService.insertBoardFile(fileVO);
 								
-								
-								// uuid
-								String tempName = UUID.randomUUID().toString();
-								
-								// file 확장자
-								String fileEx = FileUploadUtil.getExtension(fileRealName);
-								
-								// db에 저장할 파일의 경로와 파일의 이름 + 확장자
-								String filename = "D:\\upload\\" + tempName + "." + fileEx;
-								
-								// 파일 업로드
-								partTemp.write(filename);
-								partTemp.delete();
-								
-								
-								// 파일경로를 db에 저장
-								fileVO = new FileVO();
-								fileVO.setFILE_NAME(filename);
-								fileVO.setREAL_FILE_NAME(fileRealName);
-								fileVO.setBOARD_KIND_ID(boardKindId);
-								fileVO.setBOARD_SEQ(boardSeq);
-								fileVO.setFILE_STATUS("Y");
-								FileAddCnt = boardService.insertBoardFile(fileVO);
-								
-								if(FileAddCnt == 1) {
-									boardInsertFileCnt++;
+									if(FileAddCnt == 1) {
+										boardInsertFileCnt++;
+									}
 								}
 							}
+							
+							
+							
 						}
+						
+						
 					}
 				}
-				logger.debug("fileName : {}", fileRealName);
+//				logger.debug("fileName : {}", fileRealName);
 			}
 		}
 		

@@ -123,9 +123,10 @@ public class BoardUpdateServlet extends HttpServlet {
 					
 					if("filename".equals(temp[0])) {
 						
-						fileRealName = temp[1].split("\"")[1];
-						if(!fileRealName.equals("")) {
+						if(!"\"\"".equals(temp[1])) {
 							
+							fileRealName = temp[1].split("\"")[1];
+								
 							insertFileList = new ArrayList<FileVO>();
 							
 							// uuid
@@ -151,6 +152,7 @@ public class BoardUpdateServlet extends HttpServlet {
 							
 							insertFileList.add(insertFileVO);
 						}
+						
 					}
 				}
 			}
