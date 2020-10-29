@@ -27,10 +27,26 @@
 	
 	
 	
+	
+	
+	<!-- include libraries(jQuery, bootstrap) -->
+	<link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script> 
+	<script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script> 
+	
+	<!-- include summernote css/js -->
+	<script src="${cp }/pages/js/jquery-3.5.1.min.js"></script>
+	
+	<link href="${cp }/pages/css/summernote/summernote-lite.css" rel="stylesheet">
+	<script src="${cp }/pages/js/summernote/summernote-lite.js"></script>
+	<script src="${cp }/pages/js/summernote/lang/summernote-ko-KR.js"></script>
+	
+	
+	
 	<style type="text/css">
 		#repleInsertBtn{
-			height: 50px;
-		
+			height: 65px;
+			vertical-align: top;
 		}
 	</style>
 	
@@ -41,6 +57,25 @@
 
 		$(document).ready(function(){
 
+
+			$('#summernote').summernote({
+				height: null,                 // 에디터 높이
+				minHeight: null,             // 최소 높이
+				maxHeight: null,             // 최대 높이
+				focus: true,                  // 에디터 로딩후 포커스를 맞출지 여부
+				lang: "ko-KR",					// 한글 설정
+				placeholder: '최대 2048자까지 쓸 수 있습니다', //placeholder 설정
+				toolbar: [],
+				disableResizeEditor: false
+			});
+			
+			$("#summernote").summernote('disable');
+			$('.note-statusbar').hide();
+
+
+
+
+			
 			$("#updateBoardInfo").on("click", function(){
 				var boardSeq = $("#boardSeq").val();
 				document.location = "boardUpdate?boardSeq=" + boardSeq;
@@ -55,7 +90,12 @@
 
 
 			$("#repleInsertBtn").on("click", function(){
-				$("#repleWriteForm").submit();
+				var textarea = $("#repleContent").val();
+				if(textarea != ""){
+					$("#repleWriteForm").submit();
+				}else{
+					alert("댓글을 작성해주세요.");
+				}
 			})
 
 			$(".delRepleBtn").on("click", function(){
@@ -71,7 +111,6 @@
 
 			$(".delFileBtn").on("click", function(){
 				var fileId = $(this).parents(".dbFileDiv").find(".delFileId").val();
-// 				alert(fileId);
 				document.location = "fileDownload?fileId=" + fileId;
 			})
 
@@ -106,7 +145,7 @@
 						제목 : <input type="text" id="baord_title" name="baord_title" value="${boardVO.BOARD_TITLE }" readonly><br>
 						글내용 <br>
 						<div>
-							${boardVO.BOARD_CONTENT }
+							<textarea id="summernote" name="editordata">${boardVO.BOARD_CONTENT }</textarea> 
 						</div><br>
 						작성자 : ${boardVO.USERID }<br>
 						작성일자 : <fmt:formatDate value="${boardVO.BOARD_DATE }" pattern="YYYY-MM-dd"/>
@@ -132,8 +171,7 @@
 						<c:choose>
 							<c:when test="${boardVO.USERID == MEMBER.userid}">
 							
-								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								&nbsp;&nbsp;
 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -155,8 +193,7 @@
 							
 							<c:otherwise>
 							
-								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								&nbsp;&nbsp;
 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

@@ -42,6 +42,7 @@
 	
 
 	<style type="text/css">
+
  		#btnDiv{ 
 			float: right;
  		}
@@ -53,10 +54,7 @@
  			height: 30px;
  			width: 90%;
  		}
- 		#addedFileDiv {
- 		
- 		}
- 		
+
 	</style>
 
 
@@ -103,7 +101,7 @@
 
 			$("#attachAdd").on("click", function(){
 				tagId += 1;
-				tagInfo = "<div id='div"+tagId+"' class='attchFile'><input type='file' name='fileInput'><button type='button' id='"+tagId+"' class='delBtn btn btn-primary'> X </button></input></div>";
+				tagInfo = "<div id='div"+tagId+"' class='attchFile'><input type='file' name='fileInput' style='float: left;'><button type='button' id='"+tagId+"' class='delBtn btn btn-primary'> X </button></input></div>";
 				$("#addedFileDiv").append(tagInfo); // 태그 추가
 
 			});
@@ -142,9 +140,7 @@
 					
 					<div id="attachFileDiv">
 					
-						<div id="addedFileDiv">
-						
-						</div>
+						<div id="addedFileDiv"></div>
 						<br>
 						<div>
 							<button type="button" class="btn btn-primary" id="attachAdd">파일추가</button>				
