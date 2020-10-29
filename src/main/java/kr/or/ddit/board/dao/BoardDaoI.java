@@ -22,7 +22,7 @@ public interface BoardDaoI {
 	
 	List<BoardVO> selectBoardPageList(PageVO pageVO, SqlSession sqlSession);
 	
-	int selectBoardCnt(int BOARD_KIND_ID, SqlSession sqlSession);
+	int selectBoardTotal(int BOARD_KIND_ID, SqlSession sqlSession);
 	
 	int updateBoardKind(BoardKindVO bkVO);
 	

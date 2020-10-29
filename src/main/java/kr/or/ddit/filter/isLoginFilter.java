@@ -10,6 +10,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import kr.or.ddit.member.vo.MemberVO;
 
@@ -29,14 +30,20 @@ public class isLoginFilter implements Filter {
 		
 		HttpServletRequest req = (HttpServletRequest) request;
 		
-		MemberVO member = (MemberVO) req.getSession().getAttribute("MEMBER");
-		
-		if(member == null) {
-			HttpServletResponse resp = (HttpServletResponse) response;
-			resp.sendRedirect(req.getContextPath() + "/login");
-			chain.doFilter(request, response);			
+		String uri = req.getRequestURI();
+		if(uri.equals(req.getContextPath() + "/login") || uri.endsWith(".js") || uri.endsWith(".css") || uri.endsWith(".map")) {
+			chain.doFilter(request, response);
 		}else {
-			chain.doFilter(request, response);						
+			HttpSession session = req.getSession();
+			MemberVO member = (MemberVO)session.getAttribute("MEMBER");
+			// 세션에 정보가 있을 경우
+			if(member != null) {
+				chain.doFilter(request, response);
+			}else {
+				// 로그인 화면으로 재요청 지시
+				HttpServletResponse resp = (HttpServletResponse)response;
+				resp.sendRedirect(req.getContextPath() + "/login");
+			}
 		}
 		
 	}

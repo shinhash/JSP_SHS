@@ -15,6 +15,7 @@
 							BOARD_KIND_CREATOR, 
 							BOARD_KIND_DT) 
 				VALUES(BK_SEQ.NEXTVAL, #{BOARD_KIND_TITLE}, #{BOARD_KIND_STATUS}, #{BOARD_KIND_CREATOR}, SYSDATE)
+<!-- 				VALUES(#{BOARD_KIND_ID}, #{BOARD_KIND_TITLE}, #{BOARD_KIND_STATUS}, #{BOARD_KIND_CREATOR}, SYSDATE) -->
 				
   </insert>
   
@@ -93,7 +94,7 @@
   
   
   
-  <select id="selectBoardCnt" parameterType="int" resultType="int">
+  <select id="selectBoardTotal" parameterType="int" resultType="int">
   	
   	SELECT COUNT(*) 
   	FROM BOARD_TABLE
@@ -210,26 +211,6 @@
   			
   		</otherwise>
   	</choose>
-  	
-	  	
-<!--   	INSERT INTO BOARD_TABLE(BOARD_SEQ,  -->
-<!-- 							BOARD_TITLE,  -->
-<!-- 							BOARD_CONTENT,  -->
-<!-- 							BOARD_PSEQ,  -->
-<!-- 							BOARD_GN,  -->
-<!-- 							USERID,  -->
-<!-- 							BOARD_DATE,  -->
-<!-- 							BOARD_KIND_ID,  -->
-<!-- 							BOARD_STATUS) -->
-<!--   				VALUES(#{BOARD_SEQ},  -->
-<!--   					   #{BOARD_TITLE},  -->
-<!--   					   EMPTY_CLOB(),  -->
-<!--   					   #{BOARD_PSEQ},  -->
-<!--   					   GN_SEQ.NEXTVAL,  -->
-<!--   					   #{USERID},  -->
-<!--   					   SYSDATE,  -->
-<!--   					   #{BOARD_KIND_ID},  -->
-<!--   					   #{BOARD_STATUS}) -->
   					   
   </insert>
   

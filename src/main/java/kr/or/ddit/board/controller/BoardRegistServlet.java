@@ -131,15 +131,24 @@ public class BoardRegistServlet extends HttpServlet {
 								
 								boardFileAllCnt++;
 								
+								
+								// uuid
+								String tempName = UUID.randomUUID().toString();
+								
+								// file 확장자
+								String fileEx = FileUploadUtil.getExtension(fileRealName);
+								
+								// db에 저장할 파일의 경로와 파일의 이름 + 확장자
+								String filename = "D:\\upload\\" + tempName + "." + fileEx;
+								
 								// 파일 업로드
-								partTemp.write("D:\\upload\\" + fileRealName);
+								partTemp.write(filename);
 								partTemp.delete();
 								
 								
 								// 파일경로를 db에 저장
-								String tempName = UUID.randomUUID().toString();
 								fileVO = new FileVO();
-								fileVO.setFILE_NAME(tempName);
+								fileVO.setFILE_NAME(filename);
 								fileVO.setREAL_FILE_NAME(fileRealName);
 								fileVO.setBOARD_KIND_ID(boardKindId);
 								fileVO.setBOARD_SEQ(boardSeq);

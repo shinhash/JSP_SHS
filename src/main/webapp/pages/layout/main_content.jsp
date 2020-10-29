@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 
 <div class="blog-header">
-	<h1 class="blog-title">Main</h1>
+	<h1 class="blog-title">shinhash's board page</h1>
 	<p class="lead blog-description">Jsp / Spring.</p>
 </div>
 
@@ -19,24 +19,10 @@
 			
 			
 			
-				날짜 수정 
-				2017.10.30, room 201
 			</p>
 
-			<p>jsp를 통한 웹 프로그래밍 학습</p>
-			<hr>
+			<p>shinhash의 게시판 사이트</p>
 			
-			<h3>상세내역</h3>
-			<p>JSP과정에서는 다음과 같은 내용을 학습한다.</p>
-			<ul>
-				<li>servlet 동작원리</li>
-				<li>jsp와 servlet의 관계</li>
-				<li>jsp 스크립틀릿 요소</li>
-				<li>jsp action tag (standard)</li>
-				<li>jstl</li>
-				<li>db pooling</li>
-				<li>페이지 모듈화</li>
-			</ul>
 		</div>
 	</div>
 	<!-- /.blog-main -->

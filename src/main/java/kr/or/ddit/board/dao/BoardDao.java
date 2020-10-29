@@ -58,8 +58,8 @@ public class BoardDao implements BoardDaoI {
 
 
 	@Override
-	public int selectBoardCnt(int BOARD_KIND_ID, SqlSession sqlSession) {
-		return sqlSession.selectOne("board.selectBoardCnt", BOARD_KIND_ID);
+	public int selectBoardTotal(int BOARD_KIND_ID, SqlSession sqlSession) {
+		return sqlSession.selectOne("board.selectBoardTotal", BOARD_KIND_ID);
 	}
 
 

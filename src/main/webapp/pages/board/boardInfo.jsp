@@ -58,8 +58,8 @@
 				$("#repleWriteForm").submit();
 			})
 
-			$("#delRepleBtn").on("click", function(){
-				var repleId = $("#repleId").val();
+			$(".delRepleBtn").on("click", function(){
+				var repleId = $(this).parents(".showRepleDiv").find(".repleId").val()
 				document.location = "repleDelete?repleId=" + repleId;
 			})
 
@@ -67,6 +67,12 @@
 				var boardPseq = $("#boardSeq").val();
 				var boardKindId = $("#boardKindId").val();
 				document.location = "boardRegist?boardPseq=" + boardPseq + "&boardKindId=" + boardKindId;
+			})
+
+			$(".delFileBtn").on("click", function(){
+				var fileId = $(this).parents(".dbFileDiv").find(".delFileId").val();
+// 				alert(fileId);
+				document.location = "fileDownload?fileId=" + fileId;
 			})
 
 		})
@@ -111,9 +117,9 @@
 						<div id="fileListDiv">
 							<c:forEach items="${fileList }" var="file">
 							
-								<div id="dbFileDiv">
+								<div class="dbFileDiv">
 									<input type="hidden" class="delFileId" name="fileId" value="${file.FILE_SEQ }" />
-									${file.REAL_FILE_NAME } <button type="button" class="delFileBtn">Down</button>
+									${file.REAL_FILE_NAME } <button type="button" class="btn btn-primary delFileBtn">Down</button>
 								</div>
 								<br>
 								
@@ -183,17 +189,19 @@
 				<div id="repleDiv">
 					
 					<c:forEach items="${repleList }" var="reple">
+					
 					<div class="showRepleDiv">
-						<input type="hidden" id="repleId" name="repleId" value="${reple.REPLE_SEQ }" />
+						<input type="hidden" class="repleId" name="repleId" value="${reple.REPLE_SEQ }" />
 						<input type="text" value="${reple.REPLE_CONTENT }" readonly="readonly"/>
 						[${reple.USERID } / <fmt:formatDate value="${reple.REPLE_DT }" pattern="YYYY-MM-dd"/>]
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						<c:if test="${reple.USERID == MEMBER.userid}">
 							<c:if test="${reple.REPLE_STATUS == 'Y' }">
-								<button type="button" class="btn btn-primary" id="delRepleBtn">삭제</button>											
+								<button type="button" class="btn btn-primary delRepleBtn">삭제</button>											
 							</c:if>
 						</c:if>
 					</div>
+					
 					</c:forEach>
 				
 				</div>
@@ -206,7 +214,8 @@
 					<input type="hidden" name="userId" value="${MEMBER.userid }" />
 				
 					<div id="writeRepleDiv">
-						<textarea id="repleContent" name="repleContent" rows="3" cols="80" style="resize: none;"></textarea><button type="button" id="repleInsertBtn">댓글저장</button>
+						<textarea id="repleContent" name="repleContent" rows="3" cols="80" style="resize: none;"></textarea>
+						<button type="button" id="repleInsertBtn" class="btn btn-primary">댓글저장</button>
 					</div>
 				
 				</form>

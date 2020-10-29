@@ -31,5 +31,6 @@
     <mapper resource="kr/or/ddit/db/mapper/member.xml"/>
     <mapper resource="kr/or/ddit/db/mapper/board.xml"/>
     <mapper resource="kr/or/ddit/db/mapper/reple.xml"/>
+    <mapper resource="kr/or/ddit/db/mapper/file.xml"/>
   </mappers>
 </configuration>

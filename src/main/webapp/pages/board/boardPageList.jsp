@@ -106,23 +106,66 @@
 						</div>
 				
 						<br>
-						<a class="btn btn-default pull-right" href="${cp }/boardRegist?boardKindId=${boardKindId}" >새글 등록</a>
+						<a class="btn btn-primary pull-right" href="${cp }/boardRegist?boardKindId=${boardKindId }" >새글 등록</a>
 		
 						
 						<!-- 페이지 번호 -->
 						<div class="text-center">
 							<ul class="pagination">
 							
-								<c:forEach var="i" begin="1" end="${pageCnt}" step="1">
+							
+							
+								<c:choose>
+									<c:when test="${pageNum >= 2 }">
+										<li><a href="${cp}/boardListPage?boardKindId=${boardKindId }&pageNum=${1}"> 〈〈 </a></li>								
+									</c:when>
+									<c:otherwise>
+										<li class="active"><span> 〈〈 </span></li>
+									</c:otherwise>
+								</c:choose>
+							
+							
+								<c:choose>
+									<c:when test="${pageNum >= 2 }">
+										<li><a href="${cp}/boardListPage?boardKindId=${boardKindId }&pageNum=${pageNum-1}"> 〈 </a></li>								
+									</c:when>
+									<c:otherwise>
+										<li class="active"><span> 〈 </span></li>
+									</c:otherwise>
+								</c:choose>
+							
+								<c:forEach var="i" begin="1" end="${pageCnt }" step="1">
 									<c:choose>
 										<c:when test="${pageNum == i}">
 											<li class="active"><span>${i}</span></li>
 										</c:when>
 										<c:otherwise>
-											<li><a href="${cp}/boardListPage?pageNum=${i}">${i}</a></li>						
+											<li><a href="${cp}/boardListPage?boardKindId=${boardKindId }&pageNum=${i}">${i}</a></li>						
 										</c:otherwise>
 									</c:choose>
 								</c:forEach>
+								
+								
+								<c:choose>
+									<c:when test="${pageNum < pageCnt }">
+										<li><a href="${cp}/boardListPage?boardKindId=${boardKindId }&pageNum=${pageNum+1 }"> 〉 </a></li>								
+									</c:when>
+									<c:otherwise>
+										<li class="active"><span> 〉 </span></li>
+									</c:otherwise>
+								</c:choose>
+								
+								
+								<c:choose>
+									<c:when test="${pageNum < pageCnt }">
+										<li><a href="${cp}/boardListPage?boardKindId=${boardKindId }&pageNum=${pageCnt }"> 〉〉 </a></li>								
+									</c:when>
+									<c:otherwise>
+										<li class="active"><span> 〉〉 </span></li>
+									</c:otherwise>
+								</c:choose>
+								
+								
 							</ul>
 						</div>
 					</div>

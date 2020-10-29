@@ -18,10 +18,10 @@
 			
 			<c:choose>
 				<c:when test="${MEMBER == null}">
-					<a class="navbar-brand" href="#">JSP/SPRING</a>
+					<a class="navbar-brand" href="${cp }/pages/main/main.jsp">MY BOARD</a>
 				</c:when>
 				<c:otherwise>
-					<a class="navbar-brand" href="#">JSP/SPRING [ ${MEMBER.userid} ]</a>
+					<a class="navbar-brand" href="${cp }/pages/main/main.jsp">MY BOARD [ ${MEMBER.userid} ]</a>
 				</c:otherwise>
 			</c:choose>
 			
@@ -37,7 +37,7 @@
 				
 				<c:choose>
 					<c:when test="${MEMBER != null}">
-						<li><a href="logout">logOut</a></li>
+						<li><a href="${cp }/logout">logOut</a></li>
 					</c:when>
 				</c:choose>
 				

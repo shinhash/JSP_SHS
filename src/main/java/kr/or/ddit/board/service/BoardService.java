@@ -66,7 +66,7 @@ public class BoardService implements BoardServiceI {
 		// 리스트 전체 길이
 		int totalCnt = 0;
 		try {
-			totalCnt = boardDao.selectBoardCnt(boardKindId, sqlSession);			
+			totalCnt = boardDao.selectBoardTotal(boardKindId, sqlSession);			
 		}catch(Exception e) { }
 
 		
