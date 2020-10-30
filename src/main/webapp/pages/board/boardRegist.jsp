@@ -59,13 +59,12 @@
 
 
 	<script type="text/javascript">
-
+	
 		$(function(){
-
+			
+			inputfilelimitCnt = 5;			// 파일추가 가능한 수 
 			tagId = 0;
-			
 			var summer = $("#summernote");
-			
 			$('#summernote').summernote({
 				height: 300,                 // 에디터 높이
 				minHeight: null,             // 최소 높이
@@ -74,36 +73,32 @@
 				lang: "ko-KR",					// 한글 설정
 				placeholder: '최대 2048자까지 쓸 수 있습니다', //placeholder 설정
 			});
-
-			
-			$("#boardRegResetBtn").on("click", function(){
-				reset();
-			});
-
 			var reset = function() { 
 				summer.summernote('reset'); 
 			};
 
-
-
+			
+			
+			$("#boardRegResetBtn").on("click", function(){
+				reset();
+			});
 			$("#boardRegBtn").on("click", function(){
 				$("#summernoteForm").submit();
 			});
-
-
-
 			$(document).on("click", ".delBtn", function(){
-				tagId = $(this).attr("id");
-				$("#div" + tagId).remove()
+				tagId--;
+				receiveTagId = $(this).attr("id");
+				$("#div" + receiveTagId).remove()
 			});
-
-
-
 			$("#attachAdd").on("click", function(){
-				tagId += 1;
-				tagInfo = "<div id='div"+tagId+"' class='attchFile'><input type='file' name='fileInput' style='float: left;'><button type='button' id='"+tagId+"' class='delBtn btn btn-primary'> X </button></input></div>";
-				$("#addedFileDiv").append(tagInfo); // 태그 추가
-
+// 				alert(tagId)
+				if(tagId < inputfilelimitCnt){
+					tagId++;
+					tagInfo = "<div id='div"+tagId+"' class='attchFile'><input type='file' name='fileInput' style='float: left;'><button type='button' id='"+tagId+"' class='delBtn btn btn-primary'> X </button></input></div>";
+					$("#addedFileDiv").append(tagInfo); // 태그 추가
+				}else{
+					alert("파일은 한번에 5개까지만 등록됩니다.")
+				}
 			});
 			
 		});

@@ -64,9 +64,7 @@
 		$(function(){
 
 			tagId = 0;
-			
 			var summer = $("#summernote");
-			
 			$('#summernote').summernote({
 				height: 300,                 // 에디터 높이
 				minHeight: null,             // 최소 높이
@@ -75,39 +73,25 @@
 				lang: "ko-KR",					// 한글 설정
 				placeholder: '최대 2048자까지 쓸 수 있습니다', //placeholder 설정
 			});
-
+			var reset = function() { 
+				summer.summernote('reset'); 
+			};
 			
 			$("#boardRegResetBtn").on("click", function(){
 				reset();
 			});
-
-			var reset = function() { 
-				summer.summernote('reset'); 
-			};
-
-
-
 			$("#boardUpdateBtn").on("click", function(){
 				$("#updatesummernoteForm").submit();
 			});
-
-
-
 			$(document).on("click", ".delBtn", function(){
 				tagId = $(this).attr("id");
 				$("#div" + tagId).remove()
 			});
-
-
-
 			$("#attachAdd").on("click", function(){
-				tagId += 1;
+				tagId++;
 				tagInfo = "<div id='div"+tagId+"' class='attchFile'><input type='file' name='fileInput' style='float:left;'><button type='button' id='"+tagId+"' class='btn btn-primary delBtn'> X </button></input></div>";
 				$("#addedFileDiv").append(tagInfo); // 태그 추가
-
 			});
-
-
 			$(document).on("click", ".delFileBtn", function(){
 				
 				var delFileId = $(this).parents(".dbFileDiv").find(".delFileId").val();
@@ -117,7 +101,6 @@
 				$("#attachFileDiv #deletedFileIdIdiv").append(deltagInfo)
 				$(this).parents(".dbFileDiv").remove();
 			});
-			
 			
 		});
 	</script>

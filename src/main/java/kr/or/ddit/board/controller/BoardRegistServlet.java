@@ -171,7 +171,6 @@ public class BoardRegistServlet extends HttpServlet {
 							
 						}
 						
-						
 					}
 				}
 //				logger.debug("fileName : {}", fileRealName);
@@ -181,6 +180,8 @@ public class BoardRegistServlet extends HttpServlet {
 		
 		if(insertBoardCnt == 1 && boardFileAllCnt == boardInsertFileCnt) {
 			response.sendRedirect(request.getContextPath() + "/boardInfo?boardId=" + boardSeq);
+		}else {
+			doGet(request, response);
 		}
 		
 	}

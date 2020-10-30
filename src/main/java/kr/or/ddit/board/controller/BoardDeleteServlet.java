@@ -35,6 +35,8 @@ public class BoardDeleteServlet extends HttpServlet {
 		
 		if(delBoardCnt == 1) {
 			response.sendRedirect(request.getContextPath() + "/boardListPage?boardKindId=" + boardKindId);
+		}else {
+			response.sendRedirect(request.getContextPath() + "/boardListPage?boardKindId=" + boardKindId);			
 		}
 		
 	}

@@ -39,11 +39,7 @@ public class BoardKindUpdateServlet extends HttpServlet {
 		SqlSession sqlSession = MybatisUtil.getSqlSession();
 		List<BoardKindVO> bkList = boardService.selectAllBoardKind(sqlSession);
 		
-//		ServletContext sc = getServletContext();
-//		sc.setAttribute("bkList", bkList);
-		
 		request.getSession().setAttribute("bkList", bkList);
-		
 		response.sendRedirect(request.getContextPath() + "/boardCreate");
 	}
 
@@ -64,10 +60,6 @@ public class BoardKindUpdateServlet extends HttpServlet {
 		if(updateCnt == 1) {
 			SqlSession sqlSession = MybatisUtil.getSqlSession();
 			List<BoardKindVO> bkList = boardService.selectAllBoardKind(sqlSession);
-			
-//			ServletContext sc = getServletContext();
-//			sc.setAttribute("bkList", bkList);
-			
 			request.getSession().setAttribute("bkList", bkList);
 		}
 		
